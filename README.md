@@ -3,795 +3,546 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCP Security Stack - Capability Comparison</title>
+    <title>Agentic AI Security Architecture</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            background: #f5f7fa;
+            margin: 0;
             padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
         
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
+        .diagram-container {
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
             padding: 40px;
+            max-width: 1600px;
+            width: 100%;
         }
         
         h1 {
             text-align: center;
             color: #1a202c;
             margin-bottom: 10px;
-            font-size: 32px;
-            font-weight: 700;
+            font-size: 28px;
+            font-weight: 600;
         }
         
         .subtitle {
             text-align: center;
             color: #718096;
             margin-bottom: 40px;
-            font-size: 16px;
-        }
-        
-        /* Comparison Table Styles */
-        .comparison-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin-bottom: 40px;
-            overflow: hidden;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
-        }
-        
-        .comparison-table thead {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .comparison-table th {
-            padding: 20px;
-            text-align: left;
-            color: white;
-            font-weight: 600;
             font-size: 14px;
+        }
+        
+        svg {
+            width: 100%;
+            height: auto;
+            max-width: 1500px;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        /* Component styles */
+        .component-box {
+            fill: white;
+            stroke-width: 2;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+        
+        .user-zone { stroke: #4299e1; fill: #ebf8ff; }
+        .agent-zone { stroke: #9f7aea; fill: #faf5ff; }
+        .security-zone { stroke: #48bb78; fill: #f0fff4; }
+        .mcp-zone { stroke: #ed8936; fill: #fffdf7; }
+        .infra-zone { stroke: #718096; fill: #f7fafc; }
+        
+        .zone-label {
+            font-size: 12px;
+            font-weight: 600;
+            fill: #4a5568;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            position: sticky;
-            top: 0;
-            z-index: 10;
         }
         
-        .comparison-table th:first-child {
-            width: 30%;
-            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
-        }
-        
-        .vendor-header {
-            text-align: center;
-            position: relative;
-        }
-        
-        .vendor-name {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-        
-        .vendor-tagline {
-            font-size: 11px;
-            font-weight: 400;
-            opacity: 0.9;
-            text-transform: none;
-            letter-spacing: 0;
-        }
-        
-        .barndoor-header {
-            background: linear-gradient(135deg, #805ad5 0%, #6b46c1 100%);
-        }
-        
-        .trojai-header {
-            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
-        }
-        
-        .zenity-header {
-            background: linear-gradient(135deg, #3182ce 0%, #2563eb 100%);
-        }
-        
-        .combined-header {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        }
-        
-        .comparison-table tbody tr {
-            border-bottom: 1px solid #e5e7eb;
-            transition: background-color 0.2s;
-        }
-        
-        .comparison-table tbody tr:hover {
-            background-color: #f9fafb;
-        }
-        
-        .comparison-table td {
-            padding: 16px 20px;
-            vertical-align: middle;
-        }
-        
-        .threat-category {
-            font-weight: 600;
-            color: #2d3748;
-            font-size: 14px;
-        }
-        
-        .threat-description {
-            font-size: 11px;
-            color: #718096;
-            margin-top: 2px;
-        }
-        
-        .category-group {
-            background: #f7fafc;
-            font-weight: 700;
-            color: #1a202c;
-            text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 1px;
-        }
-        
-        .category-group td {
-            padding: 12px 20px;
-            border-top: 2px solid #cbd5e0;
-            border-bottom: 2px solid #cbd5e0;
-        }
-        
-        /* Capability Indicators */
-        .capability {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            min-width: 100px;
-            justify-content: center;
-        }
-        
-        .cap-strong {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-        }
-        
-        .cap-moderate {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            color: white;
-        }
-        
-        .cap-partial {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            color: white;
-        }
-        
-        .cap-weak {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            color: #92400e;
-        }
-        
-        .cap-none {
-            background: #f3f4f6;
-            color: #9ca3af;
-            border: 1px solid #e5e7eb;
-        }
-        
-        .cap-logging {
-            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
-            color: white;
-        }
-        
-        .cap-prevention {
-            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
-            color: white;
-        }
-        
-        .cap-detection {
-            background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
-            color: white;
-        }
-        
-        .cap-monitoring {
-            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
-            color: white;
-        }
-        
-        .cap-complete {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            border: 2px solid #047857;
-            font-weight: 700;
-        }
-        
-        /* Icons */
-        .icon {
-            font-size: 16px;
-        }
-        
-        /* Summary Cards */
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-        
-        .summary-card {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
-            border: 2px solid transparent;
-            transition: all 0.3s;
-        }
-        
-        .summary-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
-        }
-        
-        .card-barndoor {
-            border-color: #805ad5;
-            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
-        }
-        
-        .card-trojai {
-            border-color: #e53e3e;
-            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-        }
-        
-        .card-zenity {
-            border-color: #3182ce;
-            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-        }
-        
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        
-        .card-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
-        }
-        
-        .icon-barndoor {
-            background: linear-gradient(135deg, #805ad5 0%, #6b46c1 100%);
-        }
-        
-        .icon-trojai {
-            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
-        }
-        
-        .icon-zenity {
-            background: linear-gradient(135deg, #3182ce 0%, #2563eb 100%);
-        }
-        
-        .card-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #1a202c;
-        }
-        
-        .card-subtitle {
-            font-size: 12px;
-            color: #718096;
-            margin-top: 2px;
-        }
-        
-        .strengths-list {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .strengths-list li {
-            padding: 8px 0;
+        .component-label {
             font-size: 13px;
-            color: #4a5568;
-            padding-left: 24px;
-            position: relative;
+            font-weight: 500;
+            fill: #2d3748;
         }
         
-        .strengths-list li:before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            font-weight: bold;
+        .sub-label {
+            font-size: 11px;
+            fill: #718096;
         }
         
-        .card-barndoor .strengths-list li:before {
-            color: #805ad5;
+        .product-label {
+            font-size: 11px;
+            font-weight: 600;
+            fill: white;
         }
         
-        .card-trojai .strengths-list li:before {
-            color: #e53e3e;
+        .barndoor-fill { fill: #805ad5; }
+        .zenity-fill { fill: #3182ce; }
+        .trojai-fill { fill: #e53e3e; }
+        
+        .data-flow {
+            stroke: #4299e1;
+            stroke-width: 2;
+            fill: none;
+            marker-end: url(#arrowhead-blue);
+            stroke-dasharray: none;
         }
         
-        .card-zenity .strengths-list li:before {
-            color: #3182ce;
+        .control-flow {
+            stroke: #9f7aea;
+            stroke-width: 2;
+            fill: none;
+            marker-end: url(#arrowhead-purple);
+            stroke-dasharray: 5, 5;
         }
         
-        /* Legend */
+        .security-flow {
+            stroke: #48bb78;
+            stroke-width: 2;
+            fill: none;
+            marker-end: url(#arrowhead-green);
+            stroke-dasharray: 2, 2;
+        }
+        
+        .threat-flow {
+            stroke: #e53e3e;
+            stroke-width: 1.5;
+            fill: none;
+            marker-end: url(#arrowhead-red);
+            stroke-dasharray: 3, 3;
+        }
+        
         .legend {
-            background: #f7fafc;
-            border-radius: 12px;
+            margin-top: 30px;
             padding: 20px;
-            margin-bottom: 30px;
+            background: #f7fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
         }
         
         .legend-title {
-            font-weight: 700;
-            color: #1a202c;
+            font-weight: 600;
+            color: #2d3748;
             margin-bottom: 15px;
             font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
         
-        .legend-grid {
+        .legend-items {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 20px;
         }
         
         .legend-item {
             display: flex;
             align-items: center;
             gap: 8px;
+            font-size: 13px;
+            color: #4a5568;
         }
         
-        /* Insights Box */
-        .insights-box {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border: 2px solid #f59e0b;
-            border-radius: 12px;
-            padding: 24px;
-            margin-top: 40px;
+        .legend-line {
+            width: 40px;
+            height: 2px;
+            display: inline-block;
         }
         
-        .insights-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #92400e;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .insights-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 16px;
-        }
-        
-        .insight-item {
-            background: white;
-            border-radius: 8px;
-            padding: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .insight-label {
-            font-size: 11px;
-            color: #92400e;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
-        }
-        
-        .insight-value {
-            font-size: 20px;
-            font-weight: 700;
-            color: #1a202c;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
+        @media (max-width: 1200px) {
+            .diagram-container {
                 padding: 20px;
-            }
-            
-            .comparison-table {
-                font-size: 12px;
-            }
-            
-            .comparison-table th,
-            .comparison-table td {
-                padding: 10px;
-            }
-            
-            .capability {
-                min-width: auto;
-                padding: 4px 8px;
-                font-size: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🛡️ MCP Security Stack - Capability Comparison</h1>
-        <div class="subtitle">Comprehensive Analysis of Security Coverage Across Barndoor, TrojAI, and Zenity</div>
+    <div class="diagram-container">
+        <h1>Agentic AI Security Architecture</h1>
+        <div class="subtitle">End-to-End Security Stack with MCP Control Plane</div>
         
-        <!-- Summary Cards -->
-        <div class="summary-grid">
-            <div class="summary-card card-barndoor">
-                <div class="card-header">
-                    <div class="card-icon icon-barndoor">🚪</div>
-                    <div>
-                        <div class="card-title">Barndoor AI</div>
-                        <div class="card-subtitle">MCP Control Plane & Governance</div>
-                    </div>
-                </div>
-                <ul class="strengths-list">
-                    <li>Centralized MCP gateway control</li>
-                    <li>Strong access control & RBAC</li>
-                    <li>Policy enforcement at protocol level</li>
-                    <li>Comprehensive audit logging</li>
-                    <li>Tool-level authorization</li>
-                </ul>
-            </div>
+        <svg viewBox="0 0 1400 900" xmlns="http://www.w3.org/2000/svg">
+            <!-- Define markers for arrows -->
+            <defs>
+                <marker id="arrowhead-blue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" fill="#4299e1">
+                    <polygon points="0 0, 10 3, 0 6" />
+                </marker>
+                <marker id="arrowhead-purple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" fill="#9f7aea">
+                    <polygon points="0 0, 10 3, 0 6" />
+                </marker>
+                <marker id="arrowhead-green" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" fill="#48bb78">
+                    <polygon points="0 0, 10 3, 0 6" />
+                </marker>
+                <marker id="arrowhead-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" fill="#e53e3e">
+                    <polygon points="0 0, 10 3, 0 6" />
+                </marker>
+                
+                <!-- Gradient definitions -->
+                <linearGradient id="grad-barndoor" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#805ad5;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#6b46c1;stop-opacity:1" />
+                </linearGradient>
+                <linearGradient id="grad-zenity" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#3182ce;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#2c5282;stop-opacity:1" />
+                </linearGradient>
+                <linearGradient id="grad-trojai" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#e53e3e;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#c53030;stop-opacity:1" />
+                </linearGradient>
+            </defs>
             
-            <div class="summary-card card-trojai">
-                <div class="card-header">
-                    <div class="card-icon icon-trojai">🔬</div>
-                    <div>
-                        <div class="card-title">TrojAI</div>
-                        <div class="card-subtitle">AI Model Security & Defense</div>
-                    </div>
-                </div>
-                <ul class="strengths-list">
-                    <li>Prompt injection prevention</li>
-                    <li>Trojan & backdoor detection</li>
-                    <li>Jailbreak defense</li>
-                    <li>Red team testing capabilities</li>
-                    <li>Adversarial attack protection</li>
-                </ul>
-            </div>
+            <!-- User Zone -->
+            <rect x="20" y="20" width="320" height="120" rx="8" class="component-box user-zone"/>
+            <text x="30" y="40" class="zone-label">User Layer</text>
             
-            <div class="summary-card card-zenity">
-                <div class="card-header">
-                    <div class="card-icon icon-zenity">👁️</div>
-                    <div>
-                        <div class="card-title">Zenity</div>
-                        <div class="card-subtitle">Agent Behavioral Analytics</div>
-                    </div>
-                </div>
-                <ul class="strengths-list">
-                    <li>Real-time behavioral monitoring</li>
-                    <li>Shadow AI discovery</li>
-                    <li>Autonomous agent tracking</li>
-                    <li>Multi-step attack detection</li>
-                    <li>Intent-based analysis</li>
-                </ul>
-            </div>
-        </div>
+            <!-- Users/Developers -->
+            <rect x="40" y="60" width="130" height="60" rx="4" fill="white" stroke="#4299e1"/>
+            <text x="105" y="85" text-anchor="middle" class="component-label">End Users</text>
+            <text x="105" y="105" text-anchor="middle" class="sub-label">Business Users</text>
+            
+            <rect x="190" y="60" width="130" height="60" rx="4" fill="white" stroke="#4299e1"/>
+            <text x="255" y="85" text-anchor="middle" class="component-label">Developers</text>
+            <text x="255" y="105" text-anchor="middle" class="sub-label">Citizen Devs</text>
+            
+            <!-- AI Agent Applications Zone -->
+            <rect x="20" y="170" width="320" height="180" rx="8" class="component-box agent-zone"/>
+            <text x="30" y="190" class="zone-label">AI Agent Applications</text>
+            
+            <!-- AI Apps -->
+            <rect x="40" y="210" width="130" height="50" rx="4" fill="white" stroke="#9f7aea"/>
+            <text x="105" y="235" text-anchor="middle" class="component-label">Claude Desktop</text>
+            <text x="105" y="250" text-anchor="middle" class="sub-label">Anthropic MCP</text>
+            
+            <rect x="190" y="210" width="130" height="50" rx="4" fill="white" stroke="#9f7aea"/>
+            <text x="255" y="235" text-anchor="middle" class="component-label">Cursor IDE</text>
+            <text x="255" y="250" text-anchor="middle" class="sub-label">Dev Tools</text>
+            
+            <rect x="40" y="280" width="130" height="50" rx="4" fill="white" stroke="#9f7aea"/>
+            <text x="105" y="305" text-anchor="middle" class="component-label">Copilot Studio</text>
+            <text x="105" y="320" text-anchor="middle" class="sub-label">Microsoft</text>
+            
+            <rect x="190" y="280" width="130" height="50" rx="4" fill="white" stroke="#9f7aea"/>
+            <text x="255" y="305" text-anchor="middle" class="component-label">Custom Agents</text>
+            <text x="255" y="320" text-anchor="middle" class="sub-label">Enterprise Apps</text>
+            
+            <!-- Zenity Monitoring Layer -->
+            <rect x="380" y="170" width="240" height="180" rx="8" class="component-box security-zone"/>
+            <text x="390" y="190" class="zone-label">Behavioral Monitoring</text>
+            
+            <!-- Zenity Component -->
+            <rect x="400" y="210" width="200" height="120" rx="4" fill="url(#grad-zenity)"/>
+            <text x="500" y="235" text-anchor="middle" class="product-label">ZENITY Platform</text>
+            <line x1="410" y1="245" x2="590" y2="245" stroke="white" stroke-width="1" opacity="0.5"/>
+            
+            <text x="500" y="265" text-anchor="middle" fill="white" font-size="11">• Agent Discovery</text>
+            <text x="500" y="285" text-anchor="middle" fill="white" font-size="11">• Behavioral Analysis</text>
+            <text x="500" y="305" text-anchor="middle" fill="white" font-size="11">• Shadow AI Detection</text>
+            <text x="500" y="325" text-anchor="middle" fill="white" font-size="11">• AIDR (Detection & Response)</text>
+            
+            <!-- TrojAI Security Layer -->
+            <rect x="660" y="170" width="240" height="180" rx="8" class="component-box security-zone"/>
+            <text x="670" y="190" class="zone-label">Model Security</text>
+            
+            <!-- TrojAI Component -->
+            <rect x="680" y="210" width="200" height="120" rx="4" fill="url(#grad-trojai)"/>
+            <text x="780" y="235" text-anchor="middle" class="product-label">TROJAI Platform</text>
+            <line x1="690" y1="245" x2="870" y2="245" stroke="white" stroke-width="1" opacity="0.5"/>
+            
+            <text x="780" y="265" text-anchor="middle" fill="white" font-size="11">• Prompt Injection Defense</text>
+            <text x="780" y="285" text-anchor="middle" fill="white" font-size="11">• Jailbreak Prevention</text>
+            <text x="780" y="305" text-anchor="middle" fill="white" font-size="11">• Trojan Detection</text>
+            <text x="780" y="325" text-anchor="middle" fill="white" font-size="11">• Red Team Testing</text>
+            
+            <!-- Barndoor Control Plane -->
+            <rect x="380" y="390" width="520" height="200" rx="8" class="component-box mcp-zone"/>
+            <text x="390" y="410" class="zone-label">MCP Control Plane</text>
+            
+            <!-- Barndoor Core -->
+            <rect x="400" y="430" width="480" height="140" rx="4" fill="url(#grad-barndoor)"/>
+            <text x="640" y="455" text-anchor="middle" class="product-label" font-size="14">BARNDOOR AI Gateway</text>
+            <line x1="410" y1="465" x2="870" y2="465" stroke="white" stroke-width="1" opacity="0.5"/>
+            
+            <!-- Barndoor Components -->
+            <g>
+                <!-- Access Control -->
+                <rect x="420" y="480" width="140" height="70" rx="4" fill="white" fill-opacity="0.95"/>
+                <text x="490" y="505" text-anchor="middle" class="component-label" font-size="12">Access Control</text>
+                <text x="490" y="525" text-anchor="middle" class="sub-label" font-size="10">• User Auth</text>
+                <text x="490" y="540" text-anchor="middle" class="sub-label" font-size="10">• RBAC</text>
+                
+                <!-- Policy Engine -->
+                <rect x="580" y="480" width="140" height="70" rx="4" fill="white" fill-opacity="0.95"/>
+                <text x="650" y="505" text-anchor="middle" class="component-label" font-size="12">Policy Engine</text>
+                <text x="650" y="525" text-anchor="middle" class="sub-label" font-size="10">• Tool Rules</text>
+                <text x="650" y="540" text-anchor="middle" class="sub-label" font-size="10">• Context Policies</text>
+                
+                <!-- MCP Registry -->
+                <rect x="740" y="480" width="120" height="70" rx="4" fill="white" fill-opacity="0.95"/>
+                <text x="800" y="505" text-anchor="middle" class="component-label" font-size="12">MCP Registry</text>
+                <text x="800" y="525" text-anchor="middle" class="sub-label" font-size="10">• Server List</text>
+                <text x="800" y="540" text-anchor="middle" class="sub-label" font-size="10">• Approval</text>
+            </g>
+            
+            <!-- MCP Servers Zone -->
+            <rect x="940" y="170" width="440" height="420" rx="8" class="component-box infra-zone"/>
+            <text x="950" y="190" class="zone-label">MCP Servers & Backend Systems</text>
+            
+            <!-- First Party MCP Servers -->
+            <g>
+                <rect x="960" y="210" width="180" height="60" rx="4" fill="white" stroke="#718096"/>
+                <text x="1050" y="235" text-anchor="middle" class="component-label">First-Party MCP</text>
+                <text x="1050" y="255" text-anchor="middle" class="sub-label">Salesforce, GitHub, Slack</text>
+            </g>
+            
+            <!-- Third Party MCP Servers -->
+            <g>
+                <rect x="1180" y="210" width="180" height="60" rx="4" fill="white" stroke="#718096"/>
+                <text x="1270" y="235" text-anchor="middle" class="component-label">Third-Party MCP</text>
+                <text x="1270" y="255" text-anchor="middle" class="sub-label">OSS, Custom, Community</text>
+            </g>
+            
+            <!-- Local MCP Servers -->
+            <g>
+                <rect x="960" y="290" width="180" height="60" rx="4" fill="white" stroke="#718096"/>
+                <text x="1050" y="315" text-anchor="middle" class="component-label">Local MCP (stdio)</text>
+                <text x="1050" y="335" text-anchor="middle" class="sub-label">File System, Local DB</text>
+            </g>
+            
+            <!-- Remote MCP Servers -->
+            <g>
+                <rect x="1180" y="290" width="180" height="60" rx="4" fill="white" stroke="#718096"/>
+                <text x="1270" y="315" text-anchor="middle" class="component-label">Remote MCP (HTTP)</text>
+                <text x="1270" y="335" text-anchor="middle" class="sub-label">Cloud APIs, SaaS</text>
+            </g>
+            
+            <!-- Enterprise Systems -->
+            <rect x="960" y="380" width="400" height="190" rx="4" fill="#f7fafc" stroke="#cbd5e0" stroke-dasharray="5,5"/>
+            <text x="970" y="400" class="zone-label" font-size="11">Enterprise Backend</text>
+            
+            <!-- Backend Systems -->
+            <rect x="980" y="420" width="110" height="50" rx="4" fill="white" stroke="#cbd5e0"/>
+            <text x="1035" y="445" text-anchor="middle" class="sub-label">CRM</text>
+            <text x="1035" y="460" text-anchor="middle" class="sub-label" font-size="10">Salesforce</text>
+            
+            <rect x="1100" y="420" width="110" height="50" rx="4" fill="white" stroke="#cbd5e0"/>
+            <text x="1155" y="445" text-anchor="middle" class="sub-label">Database</text>
+            <text x="1155" y="460" text-anchor="middle" class="sub-label" font-size="10">SQL/NoSQL</text>
+            
+            <rect x="1220" y="420" width="120" height="50" rx="4" fill="white" stroke="#cbd5e0"/>
+            <text x="1280" y="445" text-anchor="middle" class="sub-label">Cloud Storage</text>
+            <text x="1280" y="460" text-anchor="middle" class="sub-label" font-size="10">S3, Azure Blob</text>
+            
+            <rect x="980" y="490" width="110" height="50" rx="4" fill="white" stroke="#cbd5e0"/>
+            <text x="1035" y="515" text-anchor="middle" class="sub-label">APIs</text>
+            <text x="1035" y="530" text-anchor="middle" class="sub-label" font-size="10">REST/GraphQL</text>
+            
+            <rect x="1100" y="490" width="110" height="50" rx="4" fill="white" stroke="#cbd5e0"/>
+            <text x="1155" y="515" text-anchor="middle" class="sub-label">Identity</text>
+            <text x="1155" y="530" text-anchor="middle" class="sub-label" font-size="10">AD/Okta</text>
+            
+            <rect x="1220" y="490" width="120" height="50" rx="4" fill="white" stroke="#cbd5e0"/>
+            <text x="1280" y="515" text-anchor="middle" class="sub-label">Productivity</text>
+            <text x="1280" y="530" text-anchor="middle" class="sub-label" font-size="10">M365, Google</text>
+            
+            <!-- Infrastructure Security Layer -->
+            <rect x="20" y="630" width="1360" height="120" rx="8" class="component-box infra-zone"/>
+            <text x="30" y="650" class="zone-label">Infrastructure & Platform Security</text>
+            
+            <!-- Infrastructure Components -->
+            <rect x="40" y="670" width="140" height="60" rx="4" fill="white" stroke="#718096"/>
+            <text x="110" y="695" text-anchor="middle" class="component-label">Network Security</text>
+            <text x="110" y="715" text-anchor="middle" class="sub-label">Firewall, WAF, IDS</text>
+            
+            <rect x="200" y="670" width="140" height="60" rx="4" fill="white" stroke="#718096"/>
+            <text x="270" y="695" text-anchor="middle" class="component-label">SIEM/SOAR</text>
+            <text x="270" y="715" text-anchor="middle" class="sub-label">Splunk, Sentinel</text>
+            
+            <rect x="360" y="670" width="140" height="60" rx="4" fill="white" stroke="#718096"/>
+            <text x="430" y="695" text-anchor="middle" class="component-label">Data Protection</text>
+            <text x="430" y="715" text-anchor="middle" class="sub-label">DLP, Encryption</text>
+            
+            <rect x="520" y="670" width="140" height="60" rx="4" fill="white" stroke="#718096"/>
+            <text x="590" y="695" text-anchor="middle" class="component-label">Identity/Access</text>
+            <text x="590" y="715" text-anchor="middle" class="sub-label">IAM, MFA, SSO</text>
+            
+            <rect x="680" y="670" width="140" height="60" rx="4" fill="white" stroke="#718096"/>
+            <text x="750" y="695" text-anchor="middle" class="component-label">Cloud Security</text>
+            <text x="750" y="715" text-anchor="middle" class="sub-label">CSPM, CWPP</text>
+            
+            <rect x="840" y="670" width="140" height="60" rx="4" fill="white" stroke="#718096"/>
+            <text x="910" y="695" text-anchor="middle" class="component-label">Compliance</text>
+            <text x="910" y="715" text-anchor="middle" class="sub-label">GDPR, HIPAA, SOC2</text>
+            
+            <!-- Monitoring & Logging -->
+            <rect x="1020" y="630" width="340" height="100" rx="8" fill="white" stroke="#48bb78" stroke-width="2"/>
+            <text x="1030" y="650" class="zone-label" fill="#48bb78">Centralized Monitoring & Analytics</text>
+            
+            <rect x="1040" y="670" width="140" height="40" rx="4" fill="#f0fff4" stroke="#48bb78"/>
+            <text x="1110" y="695" text-anchor="middle" class="sub-label">Audit Logs</text>
+            
+            <rect x="1200" y="670" width="140" height="40" rx="4" fill="#f0fff4" stroke="#48bb78"/>
+            <text x="1270" y="695" text-anchor="middle" class="sub-label">Telemetry & Metrics</text>
+            
+            <!-- Flow Arrows -->
+            <!-- User to Apps -->
+            <path d="M 180 140 L 180 210" class="data-flow"/>
+            
+            <!-- Apps to Zenity (monitoring) -->
+            <path d="M 340 260 L 400 260" class="control-flow"/>
+            
+            <!-- Apps to TrojAI (through) -->
+            <path d="M 340 290 Q 500 290 680 290" class="security-flow"/>
+            
+            <!-- Apps to Barndoor -->
+            <path d="M 255 330 L 255 430 L 400 430" class="data-flow"/>
+            
+            <!-- Zenity monitoring Barndoor -->
+            <path d="M 500 330 L 500 430" class="control-flow"/>
+            
+            <!-- TrojAI to Barndoor -->
+            <path d="M 780 330 L 780 430" class="security-flow"/>
+            
+            <!-- Barndoor to MCP Servers -->
+            <path d="M 880 510 L 960 510 L 960 240" class="data-flow"/>
+            <path d="M 880 510 L 1180 510 L 1180 240" class="data-flow"/>
+            
+            <!-- MCP to Backend -->
+            <path d="M 1050 350 L 1050 420" class="data-flow"/>
+            <path d="M 1270 350 L 1270 420" class="data-flow"/>
+            
+            <!-- Infrastructure monitoring -->
+            <path d="M 640 590 L 640 630" class="control-flow"/>
+            <path d="M 1190 630 L 1190 570" class="control-flow"/>
+            
+            <!-- Threat Flow Examples -->
+            <g opacity="0.7">
+                <path d="M 105 140 Q 105 380 380 480" class="threat-flow"/>
+                <text x="200" y="370" fill="#e53e3e" font-size="10" font-weight="600">Threat Path</text>
+            </g>
+            
+            <!-- Labels for Key Integration Points -->
+            <circle cx="500" cy="380" r="20" fill="#48bb78" opacity="0.2"/>
+            <text x="500" y="385" text-anchor="middle" font-size="10" font-weight="600" fill="#48bb78">1</text>
+            
+            <circle cx="780" cy="380" r="20" fill="#48bb78" opacity="0.2"/>
+            <text x="780" y="385" text-anchor="middle" font-size="10" font-weight="600" fill="#48bb78">2</text>
+            
+            <circle cx="640" cy="610" r="20" fill="#48bb78" opacity="0.2"/>
+            <text x="640" y="615" text-anchor="middle" font-size="10" font-weight="600" fill="#48bb78">3</text>
+            
+            <!-- Integration Labels -->
+            <text x="520" y="410" font-size="9" fill="#48bb78">API Integration</text>
+            <text x="800" y="410" font-size="9" fill="#48bb78">Inline Scanning</text>
+            <text x="660" y="640" font-size="9" fill="#48bb78">Log Aggregation</text>
+            
+            <!-- Security Boundaries -->
+            <rect x="370" y="160" width="540" height="440" rx="12" fill="none" stroke="#e53e3e" stroke-width="2" stroke-dasharray="10,5" opacity="0.3"/>
+            <text x="640" y="155" text-anchor="middle" fill="#e53e3e" font-size="11" font-weight="600">Security Perimeter</text>
+            
+            <!-- Trust Boundary -->
+            <rect x="930" y="160" width="460" height="440" rx="12" fill="none" stroke="#2b6cb1" stroke-width="2" stroke-dasharray="10,5" opacity="0.3"/>
+            <text x="1160" y="155" text-anchor="middle" fill="#2b6cb1" font-size="11" font-weight="600">Enterprise Trust Boundary</text>
+        </svg>
         
         <!-- Legend -->
         <div class="legend">
-            <div class="legend-title">Capability Levels</div>
-            <div class="legend-grid">
+            <div class="legend-title">Flow Types & Components</div>
+            <div class="legend-items">
                 <div class="legend-item">
-                    <span class="capability cap-strong">Strong</span>
-                    <span>Primary capability, best-in-class</span>
+                    <svg width="40" height="2"><line x1="0" y1="1" x2="40" y2="1" stroke="#4299e1" stroke-width="2"/></svg>
+                    <span>Data Flow (Request/Response)</span>
                 </div>
                 <div class="legend-item">
-                    <span class="capability cap-moderate">Moderate</span>
-                    <span>Good coverage, secondary focus</span>
+                    <svg width="40" height="2"><line x1="0" y1="1" x2="40" y2="1" stroke="#9f7aea" stroke-width="2" stroke-dasharray="5,5"/></svg>
+                    <span>Control/Monitoring Flow</span>
                 </div>
                 <div class="legend-item">
-                    <span class="capability cap-partial">Partial</span>
-                    <span>Limited coverage</span>
+                    <svg width="40" height="2"><line x1="0" y1="1" x2="40" y2="1" stroke="#48bb78" stroke-width="2" stroke-dasharray="2,2"/></svg>
+                    <span>Security Inspection</span>
                 </div>
                 <div class="legend-item">
-                    <span class="capability cap-none">None</span>
-                    <span>Not covered</span>
+                    <svg width="40" height="2"><line x1="0" y1="1" x2="40" y2="1" stroke="#e53e3e" stroke-width="1.5" stroke-dasharray="3,3"/></svg>
+                    <span>Potential Threat Path</span>
                 </div>
                 <div class="legend-item">
-                    <span class="capability cap-complete">Complete</span>
-                    <span>Full stack coverage</span>
+                    <div style="width: 20px; height: 20px; background: linear-gradient(135deg, #805ad5, #6b46c1); border-radius: 3px;"></div>
+                    <span>Barndoor Components</span>
+                </div>
+                <div class="legend-item">
+                    <div style="width: 20px; height: 20px; background: linear-gradient(135deg, #3182ce, #2c5282); border-radius: 3px;"></div>
+                    <span>Zenity Components</span>
+                </div>
+                <div class="legend-item">
+                    <div style="width: 20px; height: 20px; background: linear-gradient(135deg, #e53e3e, #c53030); border-radius: 3px;"></div>
+                    <span>TrojAI Components</span>
                 </div>
             </div>
         </div>
         
-        <!-- Main Comparison Table -->
-        <table class="comparison-table">
-            <thead>
-                <tr>
-                    <th>Threat Category</th>
-                    <th class="vendor-header barndoor-header">
-                        <div class="vendor-name">BARNDOOR</div>
-                        <div class="vendor-tagline">Control Plane</div>
-                    </th>
-                    <th class="vendor-header trojai-header">
-                        <div class="vendor-name">TROJAI</div>
-                        <div class="vendor-tagline">Model Security</div>
-                    </th>
-                    <th class="vendor-header zenity-header">
-                        <div class="vendor-name">ZENITY</div>
-                        <div class="vendor-tagline">Behavioral</div>
-                    </th>
-                    <th class="vendor-header combined-header">
-                        <div class="vendor-name">COMBINED</div>
-                        <div class="vendor-tagline">Full Stack</div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Access & Authorization -->
-                <tr class="category-group">
-                    <td colspan="5">Access & Authorization</td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="threat-category">Access Control</div>
-                        <div class="threat-description">User authentication, RBAC, identity management</div>
-                    </td>
-                    <td align="center"><span class="capability cap-strong">✓ Strong</span></td>
-                    <td align="center"><span class="capability cap-none">— None</span></td>
-                    <td align="center"><span class="capability cap-moderate">◐ Moderate</span></td>
-                    <td align="center"><span class="capability cap-complete">✓✓ Complete</span></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="threat-category">Policy Enforcement</div>
-                        <div class="threat-description">Rule engine, context policies, compliance</div>
-                    </td>
-                    <td align="center"><span class="capability cap-strong">✓ Strong</span></td>
-                    <td align="center"><span class="capability cap-none">— None</span></td>
-                    <td align="center"><span class="capability cap-moderate">◐ Moderate</span></td>
-                    <td align="center"><span class="capability cap-complete">✓✓ Complete</span></td>
-                </tr>
-                
-                <!-- AI/Model Threats -->
-                <tr class="category-group">
-                    <td colspan="5">AI/Model Security Threats</td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="threat-category">Prompt Injection</div>
-                        <div class="threat-description">Direct & indirect prompt manipulation</div>
-                    </td>
-                    <td align="center"><span class="capability cap-none">— None</span></td>
-                    <td align="center"><span class="capability cap-strong">✓ Strong</span></td>
-                    <td align="center"><span class="capability cap-strong">✓ Strong</span></td>
-                    <td align="center"><span class="capability cap-complete">✓✓ Complete</span></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="threat-category">Tool Poisoning</div>
-                        <div class="threat-description">Malicious tool descriptions, hidden instructions</div>
-                    </td>
-                    <td align="center"><span class="capability cap-none">— None</span></td>
-                    <td align="center"><span class="capability cap-strong">✓ Strong</span></td>
-                    <td align="center"><span class="capability cap-detection">⚡ Detection</span></td>
-                    <td align="center"><span class="capability cap-complete">✓✓ Complete</span></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="threat-category">Trojan/Backdoors</div>
-                        <div class="threat-description">Hidden model triggers, poisoned training</div>
-                    </td>
-                    <td align="center"><span class="capability cap-none">— None</span></td>
-                    <td align="center"><span class="capability cap-strong">✓ Strong</span></td>
-                    <td align="center"><span class="capability cap-none">— None</span></td>
-                    <td align="center"><span class="capability cap-complete">✓✓ Complete</span></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="threat-category">Jailbreaking</div>
-                        <div class="threat-description">Bypassing model safety guardrails</div>
-                    </td>
-                    <td align="center"><span class="capability cap-none">— None</span></td>
-                    <td align="center"><span class="capability cap-strong">✓ Strong</span></td>
-                    <td align="center"><span class="capability cap-moderate">◐ Moderate</span></td>
-                    <td align="center"><span class="capability cap-complete">✓✓ Complete</span></td>
-                </tr>
-                
-                <!-- Behavioral & Runtime -->
-                <tr class="category-group">
-                    <td colspan="5">Behavioral & Runtime Security</td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="threat-category">Behavioral Analysis</div>
-                        <div class="threat-description">Anomaly detection, pattern analysis</div>
-                    </td>
-                    <td align="center"><span class="capability cap-none">— None</span></td>
-                    <td align="center"><span class="capability cap-none">— None</span></td>
-                    <td align="center"><span class="capability cap-strong">✓ Strong</span></td>
-                    <td align="center"><span class="capability cap-complete">✓✓ Complete</span></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="threat-category">Shadow AI/MCP</div>
-                        <div class="threat-description">Unsanctioned agents, rogue MCP servers</div>
-                    </td>
-                    <td align="center"><span class="capability cap-moderate">◐ Moderate</span></td>
-                    <td align="center"><span class="capability cap-none">— None</span></td>
-                    <td align="center"><span class="capability cap-strong">✓ Strong</span></td>
-                    <td align="center"><span class="capability cap-complete">✓✓ Complete</span></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="threat-category">Autonomous Agents</div>
-                        <div class="threat-description">Always-on agents, triggered workflows</div>
-                    </td>
-                    <td align="center"><span class="capability cap-none">— None</span></td>
-                    <td align="center"><span class="capability cap-none">— None</span></td>
-                    <td align="center"><span class="capability cap-strong">✓ Strong</span></td>
-                    <td align="center"><span class="capability cap-complete">✓✓ Complete</span></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="threat-category">Multi-Step Attacks</div>
-                        <div class="threat-description">Chained exploits, complex attack patterns</div>
-                    </td>
-                    <td align="center"><span class="capability cap-none">— None</span></td>
-                    <td align="center"><span class="capability cap-moderate">◐ Moderate</span></td>
-                    <td align="center"><span class="capability cap-strong">✓ Strong</span></td>
-                    <td align="center"><span class="capability cap-complete">✓✓ Complete</span></td>
-                </tr>
-                
-                <!-- MCP-Specific -->
-                <tr class="category-group">
-                    <td colspan="5">MCP Protocol Security</td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="threat-category">MCP Server Control</div>
-                        <div class="threat-description">Registry, approval, sanctioned servers</div>
-                    </td>
-                    <td align="center"><span class="capability cap-strong">✓ Strong</span></td>
-                    <td align="center"><span class="capability cap-none">— None</span></td>
-                    <td align="center"><span class="capability cap-moderate">◐ Moderate</span></td>
-                    <td align="center"><span class="capability cap-complete">✓✓ Complete</span></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="threat-category">Tool Authorization</div>
-                        <div class="threat-description">Tool-level permissions, request filtering</div>
-                    </td>
-                    <td align="center"><span class="capability cap-strong">✓ Strong</span></td>
-                    <td align="center"><span class="capability cap-none">— None</span></td>
-                    <td align="center"><span class="capability cap-partial">○ Partial</span></td>
-                    <td align="center"><span class="capability cap-complete">✓✓ Complete</span></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="threat-category">Rug Pull Attacks</div>
-                        <div class="threat-description">Time-delayed malicious changes</div>
-                    </td>
-                    <td align="center"><span class="capability cap-none">— None</span></td>
-                    <td align="center"><span class="capability cap-none">— None</span></td>
-                    <td align="center"><span class="capability cap-monitoring">🔍 Monitoring</span></td>
-                    <td align="center"><span class="capability cap-complete">✓✓ Complete</span></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="threat-category">Cross-Server Contamination</div>
-                        <div class="threat-description">Inter-server interference, tool shadowing</div>
-                    </td>
-                    <td align="center"><span class="capability cap-partial">○ Partial</span></td>
-                    <td align="center"><span class="capability cap-none">— None</span></td>
-                    <td align="center"><span class="capability cap-detection">⚡ Detection</span></td>
-                    <td align="center"><span class="capability cap-complete">✓✓ Complete</span></td>
-                </tr>
-                
-                <!-- Data Protection -->
-                <tr class="category-group">
-                    <td colspan="5">Data Protection & Privacy</td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="threat-category">Data Leakage</div>
-                        <div class="threat-description">Exfiltration, unauthorized access, PII exposure</div>
-                    </td>
-                    <td align="center"><span class="capability cap-logging">📝 Logging</span></td>
-                    <td align="center"><span class="capability cap-prevention">🛡️ Prevention</span></td>
-                    <td align="center"><span class="capability cap-detection">⚡ Detection</span></td>
-                    <td align="center"><span class="capability cap-complete">✓✓ Complete</span></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="threat-category">Compliance & Audit</div>
-                        <div class="threat-description">Regulatory compliance, audit trails</div>
-                    </td>
-                    <td align="center"><span class="capability cap-strong">✓ Strong</span></td>
-                    <td align="center"><span class="capability cap-moderate">◐ Moderate</span></td>
-                    <td align="center"><span class="capability cap-strong">✓ Strong</span></td>
-                    <td align="center"><span class="capability cap-complete">✓✓ Complete</span></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="threat-category">Token/Credential Theft</div>
-                        <div class="threat-description">OAuth token security, API key protection</div>
-                    </td>
-                    <td align="center"><span class="capability cap-moderate">◐ Moderate</span></td>
-                    <td align="center"><span class="capability cap-partial">○ Partial</span></td>
-                    <td align="center"><span class="capability cap-detection">⚡ Detection</span></td>
-                    <td align="center"><span class="capability cap-complete">✓✓ Complete</span></td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <!-- Key Insights -->
-        <div class="insights-box">
-            <div class="insights-title">
-                <span>💡</span>
-                <span>Critical Insights & Coverage Analysis</span>
-            </div>
-            <div class="insights-grid">
-                <div class="insight-item">
-                    <div class="insight-label">Barndoor Alone</div>
-                    <div class="insight-value">35%</div>
-                    <div class="threat-description">Infrastructure control only</div>
+        <!-- Key Integration Points -->
+        <div class="legend" style="margin-top: 20px;">
+            <div class="legend-title">Key Integration Points</div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-top: 15px;">
+                <div style="display: flex; align-items: start; gap: 10px;">
+                    <div style="background: #48bb78; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px; flex-shrink: 0;">1</div>
+                    <div>
+                        <strong>Zenity → Barndoor:</strong> Behavioral telemetry, agent discovery data, risk scores for policy updates
+                    </div>
                 </div>
-                <div class="insight-item">
-                    <div class="insight-label">TrojAI Alone</div>
-                    <div class="insight-value">30%</div>
-                    <div class="threat-description">Model threats only</div>
+                <div style="display: flex; align-items: start; gap: 10px;">
+                    <div style="background: #48bb78; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px; flex-shrink: 0;">2</div>
+                    <div>
+                        <strong>TrojAI → Barndoor:</strong> Model vulnerability scores, threat intelligence, real-time blocking signals
+                    </div>
                 </div>
-                <div class="insight-item">
-                    <div class="insight-label">Zenity Alone</div>
-                    <div class="insight-value">35%</div>
-                    <div class="threat-description">Behavioral threats only</div>
-                </div>
-                <div class="insight-item">
-                    <div class="insight-label">Barndoor + TrojAI</div>
-                    <div class="insight-value">60%</div>
-                    <div class="threat-description">Missing behavioral</div>
-                </div>
-                <div class="insight-item">
-                    <div class="insight-label">Barndoor + Zenity</div>
-                    <div class="insight-value">65%</div>
-                    <div class="threat-description">Missing model security</div>
-                </div>
-                <div class="insight-item">
-                    <div class="insight-label">All Three Combined</div>
-                    <div class="insight-value">95%+</div>
-                    <div class="threat-description">Complete coverage</div>
+                <div style="display: flex; align-items: start; gap: 10px;">
+                    <div style="background: #48bb78; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px; flex-shrink: 0;">3</div>
+                    <div>
+                        <strong>All → SIEM:</strong> Centralized logging, correlation, incident response orchestration
+                    </div>
                 </div>
             </div>
         </div>
         
-        <!-- Recommendation Box -->
-        <div class="legend" style="margin-top: 30px; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #10b981;">
-            <div class="legend-title" style="color: #059669;">✅ Deployment Recommendations</div>
-            <div style="display: grid; gap: 12px; margin-top: 15px;">
-                <div style="padding: 12px; background: white; border-radius: 8px; border-left: 4px solid #10b981;">
-                    <strong style="color: #059669;">Minimum Viable Security:</strong>
-                    <span style="color: #4a5568;">Barndoor (control) + Zenity (visibility) = 65% coverage for basic protection</span>
+        <!-- Critical Functions -->
+        <div class="legend" style="margin-top: 20px; background: #fef5e7; border-color: #f39c12;">
+            <div class="legend-title" style="color: #e67e22;">🔐 Critical Security Functions by Component</div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 15px;">
+                <div>
+                    <strong style="color: #805ad5;">Barndoor (Control Plane):</strong>
+                    <ul style="margin: 5px 0; padding-left: 20px; font-size: 12px;">
+                        <li>MCP traffic gatekeeping</li>
+                        <li>Tool-level authorization</li>
+                        <li>Policy enforcement</li>
+                        <li>Audit trail generation</li>
+                    </ul>
                 </div>
-                <div style="padding: 12px; background: white; border-radius: 8px; border-left: 4px solid #f59e0b;">
-                    <strong style="color: #d97706;">Recommended Setup:</strong>
-                    <span style="color: #4a5568;">All three platforms for comprehensive defense-in-depth (95%+ coverage)</span>
+                <div>
+                    <strong style="color: #3182ce;">Zenity (Behavioral):</strong>
+                    <ul style="margin: 5px 0; padding-left: 20px; font-size: 12px;">
+                        <li>Agent behavior analysis</li>
+                        <li>Shadow AI discovery</li>
+                        <li>Runtime anomaly detection</li>
+                        <li>Multi-step attack detection</li>
+                    </ul>
                 </div>
-                <div style="padding: 12px; background: white; border-radius: 8px; border-left: 4px solid #3b82f6;">
-                    <strong style="color: #2563eb;">Phased Approach:</strong>
-                    <span style="color: #4a5568;">Start with Barndoor → Add Zenity (Month 1) → Add TrojAI (Month 2)</span>
+                <div>
+                    <strong style="color: #e53e3e;">TrojAI (Model Security):</strong>
+                    <ul style="margin: 5px 0; padding-left: 20px; font-size: 12px;">
+                        <li>Prompt injection blocking</li>
+                        <li>Jailbreak prevention</li>
+                        <li>Trojan/backdoor scanning</li>
+                        <li>Adversarial defense</li>
+                    </ul>
                 </div>
             </div>
         </div>
