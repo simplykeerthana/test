@@ -1,231 +1,344 @@
-# Barndoor.ai Capability Assessment & Targeted Technical Questions
+# Comprehensive MCP Security Stack Assessment: Barndoor + TrojAI + Zenity
 
-## Part 1: Confirmed Barndoor Capabilities
+## Executive Summary
 
-Based on the research, here's what Barndoor **actually does**:
+Based on the research, achieving comprehensive MCP security requires a layered approach:
+- **Barndoor.ai**: Control plane for MCP governance, access control, and policy enforcement
+- **TrojAI**: Advanced threat detection for trojans, backdoors, and adversarial attacks in AI models
+- **Zenity.io**: Full-lifecycle AI agent security with runtime protection and behavioral analysis
 
-### Core Architecture
-- **Control Plane for MCP**: Acts as a governance layer between AI apps and MCP servers
-- **Gateway Model**: All MCP traffic flows through Barndoor's secure gateway
-- **API Management Heritage**: Founded by team that pioneered API management for mobile apps
-
-### Key Features Confirmed
-
-#### 1. Access Control & Authorization
-- Pre-registration/approval of all AI apps, tools, agents, and MCP servers
-- User authentication through secure gateway
-- Role-based access control (RBAC)
-- Context-aware authorization (user + role + app + system + action)
-- Ability to switch access on/off instantly
-
-#### 2. Policy Enforcement
-- Inspects and authorizes every AI agent request before execution
-- Blocks destructive actions (unauthorized deletes/writes)
-- Custom conditions and rules for tool usage
-- Maps actions to system/role/user permissions
-- Can inspect LLM tool requests and apply custom restrictions
-
-#### 3. MCP Server Management
-- Centralized registration of approved MCP servers
-- Prevents connections to unapproved/random public MCP servers
-- Supports both first-party (vendor) and vetted third-party servers
-- Manages both internal and external AI apps
-
-#### 4. Visibility & Monitoring
-- Complete telemetry and audit trails
-- Real-time alerts for anomalies
-- Usage tracking and analytics
-- Tracks which MCP servers are most used
-- Monitors agent/client usage patterns
-- Immutable logs for compliance
-
-#### 5. Security Infrastructure
-- Zero Trust Architecture
-- TLS 1.3 encryption for data in transit
-- OAuth 2.0 with PKCE for API authentication
-- Hardware Security Modules (HSMs) for key storage
-- SOC2 Type II certified
-- 24/7 Security Operations Center (SOC)
-
-## Part 2: What Barndoor Does NOT Explicitly Address
-
-Based on the documentation, these capabilities are **not mentioned**:
-
-### Advanced Threat Protection
-- Prompt injection detection/prevention
-- Tool poisoning protection
-- Rug pull attack prevention
-- Cross-server contamination prevention
-- Command injection sanitization
-- Content filtering of prompts/responses
-
-### Runtime Security
-- Behavioral anomaly detection using ML/AI
-- Sandboxing of MCP servers
-- Dynamic tool description monitoring
-- Token theft prevention mechanisms
-- Rate limiting for tool calls
-
-### Protocol-Level Security
-- Input/output content inspection
-- Obfuscation detection (base64, etc.)
-- Hidden instruction detection in tool descriptions
-- Cross-tool interference prevention
+Together, these platforms create a complete security stack addressing both infrastructure-level and model-level threats.
 
 ---
 
-## Part 3: Targeted Technical Questions for Barndoor
+## Part 1: Barndoor.ai - MCP Control Plane
 
-### A. Core Platform Architecture
+### What Barndoor DOES (Confirmed Capabilities)
 
-**1. Gateway Implementation**
-- How exactly does your secure gateway intercept MCP traffic? Is it a proxy, SDK, or agent-based approach?
-- Does Barndoor require modifications to existing AI apps or MCP servers to route through your gateway?
-- What happens if your gateway goes down? Is there a bypass mode or does all MCP traffic stop?
+#### Core Architecture
+- **Control Plane for MCP**: Acts as a governance layer between AI apps and MCP servers
+- **Secure Gateway Model**: All MCP traffic flows through Barndoor's gateway
+- **API Management Heritage**: Founded by team that pioneered API management
 
-**2. Integration Requirements**
-- How do you integrate with AI apps like Claude Desktop, Cursor, or custom applications?
-- Do you provide SDKs or APIs that AI apps must use, or is it transparent?
-- How long does typical integration take for an enterprise with 50+ AI apps?
+#### Key Strengths
+1. **Access Control & Authorization**
+   - Pre-registration/approval of all AI apps, tools, agents, and MCP servers
+   - User authentication through secure gateway
+   - Context-aware authorization (user + role + app + system + action)
+   - Instant access on/off switching
 
-**3. MCP Protocol Support**
-- Which MCP transport mechanisms do you support (stdio, HTTP, SSE)?
-- How do you handle the recent deprecation of SSE in favor of Streamable HTTP?
-- Can you work with both local and remote MCP servers?
+2. **Policy Enforcement**
+   - Inspects and authorizes every AI agent request before execution
+   - Blocks destructive actions (unauthorized deletes/writes)
+   - Custom conditions and rules for tool usage
+   - Maps actions to system/role/user permissions
 
-### B. Access Control & Policy Enforcement
+3. **MCP Server Management**
+   - Centralized registration of approved MCP servers
+   - Prevents connections to unapproved public MCP servers
+   - Manages both first-party and third-party servers
 
-**4. Granular Control Mechanisms**
-- Can you demonstrate how custom conditions work for restricting tool usage?
-- How do you parse and inspect LLM tool requests - at what layer does this happen?
-- Can policies be set at different granularities (global, per-app, per-user, per-tool)?
+4. **Visibility & Monitoring**
+   - Complete telemetry and audit trails
+   - Real-time alerts for anomalies
+   - Usage tracking and analytics
+   - Immutable logs for compliance
 
-**5. Dynamic Policy Management**
-- Can policies be updated in real-time without disrupting active connections?
-- Do you support time-based or context-based policies (e.g., different rules during business hours)?
-- How do you handle policy conflicts when multiple rules apply?
+### What Barndoor DOESN'T Address
+- Prompt injection detection/prevention
+- Tool poisoning protection
+- Behavioral anomaly detection using AI/ML
+- Content filtering of prompts/responses
+- Sandboxing of MCP servers
+- Token theft prevention mechanisms
 
-**6. Authentication Flow**
-- Walk us through the complete authentication flow when a user connects to an MCP server
-- How do you handle service accounts vs. human users?
-- Can you enforce step-up authentication for sensitive operations?
+---
 
-### C. Security Capabilities
+## Part 2: TrojAI - Model Security & Adversarial Defense
 
-**7. Threat Detection**
-- What specific MCP-related threats can you detect today?
-- Do you inspect the content of prompts and responses, or just the metadata?
-- How would your platform handle a scenario where:
-  - A malicious GitHub issue contains prompt injection instructions?
-  - An MCP tool description is modified after approval?
-  - One MCP server tries to interfere with another's operations?
+### What TrojAI DOES (Fills Critical Gaps)
 
-**8. Data Protection**
-- Where and how do you store OAuth tokens for MCP servers?
-- Can you detect if sensitive data (PII, credentials) is being passed through MCP?
-- Do you support data masking or redaction in transit?
+#### Core Capabilities
+1. **Trojan & Backdoor Detection**
+   - Detects hidden triggers in AI models before deployment
+   - Identifies backdoored models from untrusted sources
+   - Scans for data poisoning attacks
 
-**9. Incident Response**
-- If you detect malicious activity, what automatic actions can be taken?
-- Can you immediately revoke access to specific MCP servers or tools?
-- How quickly can you deploy emergency patches for zero-day MCP vulnerabilities?
+2. **Red Teaming & Vulnerability Assessment**
+   - **TrojAI Detect**: Pre-deployment red teaming
+   - 150+ built-in security tests
+   - Multi-turn and agentic attack simulations
+   - Custom test creation capabilities
 
-### D. Monitoring & Analytics
+3. **Runtime Protection**
+   - **TrojAI Defend**: Real-time AI firewall
+   - Blocks prompt injection attempts
+   - Prevents jailbreaking and data leaks
+   - Protects against adversarial inputs
 
-**10. Visibility Depth**
-- What exactly is captured in your audit logs? Can you show a sample log entry?
-- Can you track data lineage across multiple MCP server interactions?
-- Do you provide analytics on unusual access patterns or data volumes?
+4. **Advanced Threat Coverage**
+   - Adversarial attack prevention
+   - Data extraction/loss prevention
+   - Model extraction prevention
+   - Toxic content generation blocking
+   - Remote code execution prevention
 
-**11. Alerting Capabilities**
-- What types of anomalies trigger real-time alerts?
-- Can alerts be customized based on specific patterns or thresholds?
-- Do you integrate with enterprise SIEM platforms? Which ones?
+### How TrojAI Complements Barndoor
+- **Addresses**: Prompt injection, jailbreaking, adversarial attacks
+- **Provides**: Model-level security that Barndoor's infrastructure focus doesn't cover
+- **Integration Point**: Can scan models before they're deployed through Barndoor's MCP servers
 
-### E. Performance & Scalability
+---
 
-**12. Latency Impact**
-- What is the typical latency added by your gateway for an MCP request?
-- Have you benchmarked performance with high-volume scenarios (1000+ requests/second)?
-- Can certain trusted operations bypass inspection for performance?
+## Part 3: Zenity - Agent-Centric Security Platform
 
-**13. Scalability Architecture**
-- How does your platform scale horizontally?
-- What are the limits on concurrent connections, policies, or MCP servers?
-- Can you deploy in multiple regions for global enterprises?
+### What Zenity DOES (Comprehensive Agent Protection)
 
-### F. Specific Threat Scenarios
+#### Core Capabilities
+1. **AI Agent Discovery & Inventory**
+   - Automatic discovery across SaaS, cloud, and endpoints
+   - Full attribution (who built what, when, where)
+   - Shadow AI detection
+   - MCP server cataloging (including local stdio servers)
 
-**14. Demonstration Requests**
-- Can you demonstrate protection against these specific scenarios:
-  - **Unsanctioned MCP Server**: Employee downloads open-source MCP server and connects via Cursor
-  - **Cross-tenant leak**: Like the Asana bug - how would you prevent this?
-  - **Tool mutation**: MCP server changes behavior 30 days after approval
-  - **Credential theft**: Malicious actor tries to exfiltrate OAuth tokens
+2. **AI Security Posture Management (AISPM)**
+   - Risk scoring and vulnerability assessment
+   - Misconfiguration detection
+   - Over-permission identification
+   - Compliance alignment (OWASP, MITRE ATLAS)
 
-**15. Advanced Attack Vectors**
-- How would you detect/prevent:
-  - Base64-encoded malicious instructions in prompts?
-  - MCP servers making unexpected cross-service calls?
-  - Time-delayed malicious behavior (rug pull attacks)?
-  - Command injection through unsanitized tool parameters?
+3. **Runtime Behavioral Analysis**
+   - Step-by-step agent activity monitoring
+   - Intent analysis beyond just prompt inspection
+   - Multi-step attack detection
+   - Autonomous agent monitoring
 
-### G. Deployment & Operations
+4. **AI Detection & Response (AIDR)**
+   - Real-time threat detection
+   - Prompt injection identification (direct & indirect)
+   - RAG poisoning detection
+   - Automated response playbooks
 
-**16. Deployment Options**
-- Can Barndoor be deployed on-premises or in a private cloud?
-- What are the infrastructure requirements (compute, storage, network)?
-- Do you support air-gapped environments?
+5. **MCP-Specific Security**
+   - MCP server discovery and risk assessment
+   - Configuration scanning
+   - Tool and prompt monitoring
+   - Rug pull prevention through continuous assessment
 
-**17. High Availability**
-- What is your SLA for uptime?
-- How do you handle failover between regions?
-- Can you operate in a degraded mode if certain components fail?
+### How Zenity Complements Barndoor
+- **Addresses**: Behavioral analysis, shadow AI, autonomous agents
+- **Provides**: Agent-centric security vs. Barndoor's infrastructure focus
+- **Integration Point**: Can monitor agents that connect through Barndoor's gateway
 
-### H. Roadmap & Evolution
+---
 
-**18. Future Capabilities**
-- What security features are on your roadmap for the next 6 months?
-- How are you planning to address prompt injection and tool poisoning?
-- Will you support other agent protocols (Google A2A, IBM Agent Communication)?
+## Part 4: Combined Stack - Complete MCP Security Coverage
 
-**19. Security Research**
-- Do you have a dedicated security research team for MCP threats?
-- How quickly do you typically respond to new vulnerability disclosures?
-- Do you participate in the MCP security community?
+### Threat Coverage Matrix
 
-### I. Proof of Concept
+| Threat Category | Barndoor | TrojAI | Zenity | Combined Coverage |
+|-----------------|----------|---------|---------|-------------------|
+| **Access Control** | ✅ Strong | ❌ | ✅ Moderate | ✅ Complete |
+| **Policy Enforcement** | ✅ Strong | ❌ | ✅ Moderate | ✅ Complete |
+| **Prompt Injection** | ❌ | ✅ Strong | ✅ Strong | ✅ Complete |
+| **Tool Poisoning** | ❌ | ✅ Strong | ✅ Detection | ✅ Complete |
+| **Behavioral Analysis** | ❌ | ❌ | ✅ Strong | ✅ Complete |
+| **Shadow AI/MCP** | ✅ Moderate | ❌ | ✅ Strong | ✅ Complete |
+| **Trojan/Backdoors** | ❌ | ✅ Strong | ❌ | ✅ Complete |
+| **Data Leakage** | ✅ Logging | ✅ Prevention | ✅ Detection | ✅ Complete |
+| **Autonomous Agents** | ❌ | ❌ | ✅ Strong | ✅ Complete |
+| **Rug Pull Attacks** | ❌ | ❌ | ✅ Monitoring | ✅ Complete |
+| **Cross-Server Contamination** | ✅ Partial | ❌ | ✅ Detection | ✅ Complete |
 
-**20. POC Structure**
-- Can we run a POC with our specific MCP servers and attack scenarios?
-- What support do you provide during POC?
-- Can we test your emergency response procedures?
-- What metrics should we use to evaluate effectiveness?
+### Implementation Architecture
 
-## Part 4: Red Flags to Watch For
+```
+User/Agent → Zenity (Discovery) → Barndoor (Gateway) → TrojAI (Scanning) → MCP Server
+                ↓                        ↓                    ↓
+           [Behavioral            [Access Control]      [Model Security]
+            Monitoring]            [Policy Check]        [Threat Block]
+```
 
-During vendor discussions, be concerned if Barndoor:
+---
 
-1. **Cannot demonstrate** real-time inspection of prompt/response content
-2. **Lacks mechanisms** to detect tool description changes post-approval
-3. **Has no plans** to address prompt injection or tool poisoning
-4. **Cannot prevent** cross-server interference or contamination
-5. **Doesn't support** common MCP implementations you use
-6. **Has high latency** impact (>100ms per request)
-7. **Requires significant** changes to existing AI apps/MCP servers
-8. **Cannot integrate** with your SIEM/security stack
-9. **Has no incident** response team or procedures
-10. **Cannot provide** references from similar enterprises
+## Part 5: Targeted Questions for Each Vendor
 
-## Part 5: Follow-Up Areas
+### Questions for Barndoor
 
-Based on their responses, dive deeper into:
+**Integration & Compatibility**
+1. How does your gateway integrate with Zenity's agent discovery and TrojAI's model scanning?
+2. Can you pass telemetry to Zenity for behavioral analysis while maintaining low latency?
+3. Do you support webhook/API integration for third-party security tools?
 
-1. **Live demonstrations** of actual threat prevention
-2. **Architecture diagrams** showing data flow
-3. **Customer case studies** with measurable outcomes
-4. **Integration complexity** for your specific environment
-5. **Total cost of ownership** including hidden costs
-6. **Professional services** requirements
-7. **Training and certification** for your team
-8. **Compliance reports** (SOC2, penetration tests)
+**Advanced Threat Handling**
+4. When TrojAI or Zenity detect a threat, can Barndoor automatically block specific tools/servers?
+5. How quickly can emergency policies be deployed across all gateways?
+6. Can you implement conditional access based on risk scores from other tools?
+
+**Performance with Security Stack**
+7. What's the cumulative latency impact when running with TrojAI and Zenity?
+8. Can certain operations bypass the full stack for performance (with compensating controls)?
+
+### Questions for TrojAI
+
+**MCP-Specific Protection**
+1. How do you scan MCP tool descriptions for hidden malicious instructions?
+2. Can you detect prompt injection attempts in MCP tool parameters?
+3. Do you support real-time scanning of MCP server responses?
+
+**Integration with Barndoor**
+4. Can TrojAI Defend be deployed inline with Barndoor's gateway?
+5. How do you handle high-volume MCP traffic without impacting latency?
+6. Can scanning policies be customized per MCP server type?
+
+**Model Security for MCP**
+7. How do you detect if an MCP server's underlying model has been trojaned?
+8. Can you scan models from popular MCP servers (OpenAI, Anthropic, local LLMs)?
+
+### Questions for Zenity
+
+**MCP Discovery & Monitoring**
+1. How do you discover local (stdio) MCP servers on developer machines?
+2. Can you detect when MCP servers change behavior over time (rug pull)?
+3. Do you monitor MCP-specific protocols beyond just HTTP?
+
+**Agent Behavioral Analysis**
+4. How do you track agent behavior across multiple MCP servers?
+5. Can you detect cross-server contamination or interference?
+6. What's your detection rate for multi-step MCP attacks?
+
+**Integration with Barndoor**
+7. Can Zenity consume Barndoor's audit logs for enhanced behavioral analysis?
+8. How do you handle agents that bypass Barndoor (shadow AI)?
+9. Can you automatically update Barndoor policies based on detected threats?
+
+---
+
+## Part 6: Implementation Recommendations
+
+### Phase 1: Foundation (Weeks 1-4)
+1. **Deploy Barndoor** as the control plane
+   - Establish MCP server inventory
+   - Implement basic access controls
+   - Set up audit logging
+
+2. **Deploy Zenity** for discovery
+   - Identify all AI agents and MCP servers
+   - Detect shadow AI/MCP usage
+   - Baseline normal behavior
+
+### Phase 2: Threat Detection (Weeks 5-8)
+3. **Integrate TrojAI Detect**
+   - Scan all MCP server models
+   - Red team existing implementations
+   - Identify vulnerabilities
+
+4. **Enable Zenity AIDR**
+   - Activate behavioral monitoring
+   - Configure alert thresholds
+   - Map to security frameworks
+
+### Phase 3: Active Protection (Weeks 9-12)
+5. **Deploy TrojAI Defend**
+   - Enable runtime protection
+   - Configure blocking policies
+   - Test incident response
+
+6. **Full Stack Integration**
+   - Connect all platforms via APIs
+   - Implement automated response
+   - Establish SOC procedures
+
+### Phase 4: Optimization (Ongoing)
+7. **Performance Tuning**
+   - Optimize latency
+   - Implement bypass rules
+   - Scale infrastructure
+
+8. **Continuous Improvement**
+   - Regular red teaming
+   - Policy refinement
+   - Threat intelligence updates
+
+---
+
+## Part 7: Key Evaluation Criteria
+
+### Must-Have Capabilities (Day 1)
+- ✅ MCP traffic control (Barndoor)
+- ✅ Agent discovery (Zenity)
+- ✅ Basic threat detection (TrojAI)
+- ✅ Audit logging (All)
+
+### Should-Have Capabilities (Month 1)
+- ✅ Prompt injection prevention
+- ✅ Behavioral analysis
+- ✅ Automated response
+- ✅ Shadow AI detection
+
+### Nice-to-Have Capabilities (Quarter 1)
+- ✅ Advanced red teaming
+- ✅ Predictive threat detection
+- ✅ Custom security models
+- ✅ Full automation
+
+---
+
+## Part 8: Risk Assessment Without Full Stack
+
+### Using Only Barndoor
+**Protected Against:**
+- Unauthorized MCP access
+- Basic policy violations
+- Unsanctioned servers
+
+**Still Vulnerable To:**
+- Prompt injection
+- Tool poisoning
+- Behavioral attacks
+- Model backdoors
+
+### Using Only Barndoor + TrojAI
+**Additional Protection:**
+- Model-level threats
+- Adversarial attacks
+- Jailbreaking
+
+**Still Vulnerable To:**
+- Shadow AI
+- Behavioral anomalies
+- Autonomous agent risks
+
+### Using Only Barndoor + Zenity
+**Additional Protection:**
+- Agent behavior monitoring
+- Shadow AI detection
+- Runtime anomalies
+
+**Still Vulnerable To:**
+- Model backdoors
+- Sophisticated trojans
+- Advanced adversarial attacks
+
+---
+
+## Conclusion
+
+**For comprehensive MCP security, all three platforms are recommended:**
+
+1. **Barndoor** provides the essential control plane and governance layer
+2. **TrojAI** adds critical model security and adversarial protection
+3. **Zenity** delivers agent-centric visibility and behavioral analysis
+
+This layered approach ensures defense-in-depth against the full spectrum of MCP threats, from infrastructure attacks to model manipulation to agent misbehavior.
+
+**Budget Considerations:**
+- **Minimum viable**: Barndoor + Zenity (infrastructure + visibility)
+- **Recommended**: All three platforms
+- **Phased approach**: Start with Barndoor, add others based on threat landscape
+
+**Next Steps:**
+1. Schedule POCs with all three vendors
+2. Conduct integrated testing of the stack
+3. Develop combined security policies
+4. Train SOC on unified operations
